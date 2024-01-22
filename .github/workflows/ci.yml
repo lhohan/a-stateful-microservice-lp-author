@@ -72,17 +72,14 @@ jobs:
         resp=$(curl http://localhost:8001)
         echo $'\nRunning init'
         resp=$(curl http://localhost:8003)
-        echo "A $resp"
+        echo "$resp"
         resp=$(curl http://localhost:8003/init)
-        echo "B $resp"
+        echo "$resp"
         echo $'\nRunning create orders'
         curl http://localhost:8003/create_orders -X POST -d @orders.json
-        sleep 5
         echo $'\nRunning orders'
-        curl http://localhost:8003/orders
-        sleep 5
+        resp=$(curl http://localhost:8003/orders)
+        echo "$resp"
         echo $'\nDone!'
-        kill -9 `cat wasmedge2.pid`
-        kill -9 `cat wasmedge1.pid`
-        rm wasmedge1.pid
-        rm wasmedge2.pid
+        kill -9 `cat order_management/wasmedge2.pid`
+        kill -9 `cat sales_tax_rate/wasmedge1.pid`

@@ -187,12 +187,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
     let pool_opts = PoolOpts::default().with_constraints(constraints);
     let pool = Pool::new(builder.pool_opts(pool_opts));
 
-    let mut conn = pool.get_conn().await.unwrap();
-    // "DROP TABLE IF EXISTS orders;".ignore(&mut conn).await?;
-    "CREATE TABLE IF NOT EXISTS umet.orders (order_id INT NOT NULL AUTO_INCREMENT, product_id INT, quantity INT, subtotal FLOAT, shipping_address VARCHAR(1024), shipping_zip VARCHAR(32), total FLOAT, shipping_cost FLOAT, PRIMARY KEY (order_id));".ignore(&mut conn).await?;
-    drop(conn);
-    println!("I did it!");
-
     let addr = SocketAddr::from(([0, 0, 0, 0], 8003));
     let make_svc = make_service_fn(|_| {
         let pool = pool.clone();
