@@ -68,8 +68,8 @@ jobs:
     - name: Test the service
       run: |
         echo $'\nRunning init'
-        curl http://localhost:8003/init
-        sleep 5
+        resp=$(curl http://localhost:8003/init)
+        echo "$resp"
         echo $'\nRunning create orders'
         curl http://localhost:8003/create_orders -X POST -d @orders.json
         sleep 5
