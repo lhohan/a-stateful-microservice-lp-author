@@ -68,6 +68,8 @@ jobs:
     - name: Test the service
       run: |
         echo $'\nRunning init'
+        resp=$(curl http://localhost:8003)
+        echo "$resp"
         resp=$(curl http://localhost:8003/init)
         echo "$resp"
         echo $'\nRunning create orders'
