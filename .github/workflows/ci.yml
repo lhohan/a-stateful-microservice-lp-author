@@ -53,10 +53,14 @@ jobs:
     - name: Run the microservice on MySQL
       run: |
         cd sales_tax_rate
-        cargo build --target wasm32-wasi --release && wasmedge target/wasm32-wasi/release/sales_tax_rate_lookup.wasm
+        cargo build --target wasm32-wasi --release
+        nohup wasmedge target/wasm32-wasi/release/sales_tax_rate_lookup.wasm &
+        echo $! > wasmedge1.pid
         cd ..
         cd order_management
-        cargo build --target wasm32-wasi --release && wasmedge --env "SALES_TAX_RATE_SERVICE=http://127.0.0.1:8001/find_rate" --env "DATABASE_URL=mysql://root:root@localhost:3306/umet" target/wasm32-wasi/release/order_management.wasm --env RUST_BACKTRACE=1
+        cargo build --target wasm32-wasi --release
+        nohup wasmedge --env "SALES_TAX_RATE_SERVICE=http://127.0.0.1:8001/find_rate" --env "DATABASE_URL=mysql://root:root@localhost:3306/umet" target/wasm32-wasi/release/order_management.wasm --env RUST_BACKTRACE=1 &
+        echo $! > wasmedge2.pid
         sleep 15
         
     - name: Test the service
@@ -77,5 +81,7 @@ jobs:
         curl http://localhost:8080/orders
         sleep 5
         echo $'\nDone!'
-        # kill -9 `cat wasmedge.pid`
-        # rm wasmedge.pid
+        kill -9 `cat wasmedge2.pid`
+        kill -9 `cat wasmedge1.pid`
+        rm wasmedge1.pid
+        rm wasmedge2.pid
