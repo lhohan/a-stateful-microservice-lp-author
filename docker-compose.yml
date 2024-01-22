@@ -25,12 +25,18 @@ services:
       - 8003:8003
     environment:
       SALES_TAX_RATE_SERVICE: http://sales-tax-rate:8001/find_rate
-      DATABASE_URL: mysql://root:whalehello@db:3306/mysql
+      DATABASE_URL: mysql://sammy:password@db:3306/umet
       RUST_BACKTRACE: full
     restart: unless-stopped
     runtime: io.containerd.wasmedge.v1
 
   db:
     image: mariadb:10.9
+    ports:
+      - 3306:3306
     environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: true
+      MYSQL_USER: sammy
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: umet
       MYSQL_ROOT_PASSWORD: whalehello
