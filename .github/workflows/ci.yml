@@ -67,6 +67,8 @@ jobs:
         
     - name: Test the service
       run: |
+        echo $'\Call to tax service'
+        resp=$(curl http://localhost:8001)
         echo $'\nRunning init'
         resp=$(curl http://localhost:8003)
         echo "A $resp"
@@ -77,12 +79,6 @@ jobs:
         sleep 5
         echo $'\nRunning orders'
         curl http://localhost:8003/orders
-        sleep 5
-        echo $'\nRunning delete order'
-        curl http://localhost:8080/delete_order?id=2
-        sleep 5
-        echo $'\nRunning orders'
-        curl http://localhost:8080/orders
         sleep 5
         echo $'\nDone!'
         kill -9 `cat wasmedge2.pid`
