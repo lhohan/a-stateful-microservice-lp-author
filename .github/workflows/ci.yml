@@ -40,6 +40,7 @@ jobs:
         mysql -e "SET @@GLOBAL.GTID_MODE = ON;" -uroot -proot
         mysql -e "PURGE BINARY LOGS BEFORE now();" -uroot -proot
         mysql -e "PURGE BINARY LOGS BEFORE now();" -uroot -proot
+        mysql -e "create database umet;" -uroot -proot
     
     - name: Install Rust target for wasm
       run: |
