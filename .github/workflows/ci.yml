@@ -76,7 +76,7 @@ jobs:
         resp=$(curl http://localhost:8003/init)
         echo "$resp"
         echo $'\nRunning create orders'
-        curl http://localhost:8003/create_orders -X POST -d @order.json
+        curl http://localhost:8003/create_order -X POST -d @order.json
         echo $'\nRunning orders'
         resp=$(curl http://localhost:8003/orders)
         echo "$resp"
